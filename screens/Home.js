@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Keyboard, TouchableOpacity, TextInput, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Keyboard, TouchableOpacity, TextInput, Pressable, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ const Home = () => {
     const [todos, setTodos] = useState([]);
     const todoref = firebase.firestore().collection('todos');
     const navigation = useNavigation(); 
-    const [heading, setHeading] = useState('');
+    const [addData, setAddData] = useState('');
     //fetching data from firebase
     useEffect(() => {
         todoref
@@ -64,6 +64,11 @@ const Home = () => {
 
     return (
         <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Image style={{marginTop: 50, alignItems: 'center', marginLeft: 114, width: 150, height:40, padding: 1 }} 
+                source={require('../assets/logo1.png')} 
+            />
+
+            {/* <Text style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 50}}>Todo List</Text> */}
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}
@@ -83,15 +88,21 @@ const Home = () => {
                 numColumns={1}
                 renderItem={({item}) => (
                     <View>
+                        
                         <Pressable
                             style={styles.container}
                             onPress={() => navigation.navigate('Detail', {item})}
                         >
+                            
                             <FontAwesome
+                                style={{marginLeft: 3,}}
                                 name='trash-o'
+                                size={24}
                                 color='red'
-                                opPress={() => deleteTodo(item)}
+                                onPress={() => deleteTodo(item)}
                             />
+                            
+                            
                             <View style={styles.innerContainer}>
                                 <Text style={styles.itemHeading}>
                                     {item.heading[0].toUpperCase() + item.heading.slice(1)}
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     innerContainer: {
         alignItems: 'center',
         flexDirection: 'column',
-        marginLeft: 45,
+        marginLeft: 20,
     },
     itemHeading: {
         fontSize: 18,
@@ -134,13 +145,14 @@ const styles = StyleSheet.create({
         height: 80,
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 100,
+        marginTop: 15,
+    
     },
     input: {
         height: 48,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'white',
+        backgroundColor: '#ECEFF1',
         paddingLeft: 16,
         flex: 1,
         marginRight: 5,
@@ -162,5 +174,9 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 20,
         marginLeft: 14,
+    },
+    delete: {
+        backgroundColor: '#fff',
+        padding: 10,
     },
 })
